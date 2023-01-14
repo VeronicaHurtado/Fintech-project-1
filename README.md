@@ -15,6 +15,8 @@ TBD...
 3- Install the following dependencies:
 ```commandline
 pip install streamlit
+pip install streamlit-lottie
+pip install requests
 ```
 4- To run the application, go to the root directory and use:
 ```commandline

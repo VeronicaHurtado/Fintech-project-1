@@ -53,3 +53,10 @@ def get_car_emissions_rate(car_make, car_mode):
     car_emissions_data = json.loads(car_emissions_response.text)
     car_emissions_rate = car_emissions_data["emissions_rate"]
     return car_emissions_rate
+
+
+def load_lottie(url):
+    response = requests.get(url)
+    if response.status_code != 200:
+        return None
+    return response.json()

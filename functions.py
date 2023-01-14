@@ -48,3 +48,5 @@ def calculate_emissions_saved(distance, car_make, car_model):
     car_emissions_rate = get_car_emissions_rate()
     emissions_saved = distance * car_emissions_rate
     return emissions_saved
+
+
