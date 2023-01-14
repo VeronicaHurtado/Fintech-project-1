@@ -18,6 +18,8 @@ def calculate_fuel_cost(distance, fuel_type, cost_per_litre):
         # Raise an error for unsupported fuel types
         raise ValueError(f"Unsupported fuel type: {fuel_type}")
 
+    print(f'Distance: {distance} km. Fuel consumption: {kml} kml')
+
     # Calculate the number of litres consumed
     litres_consumed = distance / kml
     # Calculate the cost of the fuel consumed

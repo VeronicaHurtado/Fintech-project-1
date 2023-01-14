@@ -26,13 +26,11 @@ def get_distance(origins, destinations, output_format='json'):
     url += 'key=' + google_api_key
     url += '&origins=' + origins + '&destinations=' + destinations
 
-    payload = {}
-    headers = {}
-
     response = requests.get(url)
     data = json.loads(response.text)
-
-    return data['rows'][0]['elements'][0]['distance']['text']
+    distance_in_metres = data['rows'][0]['elements'][0]['distance']['value']
+    distance_in_kilometres = distance_in_metres/1000
+    return distance_in_kilometres
 
 
 # Get fuel consumption/efficiency in Kilometres per litre
