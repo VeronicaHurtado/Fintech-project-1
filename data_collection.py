@@ -1,14 +1,15 @@
 import requests
 import os
-from constants import GOOGLE_API_DISTANCE_MATRIX
+from constants import GOOGLE_API_DISTANCE_MATRIX, GOOGLE_API_PLACE_AUTOCOMPLETE, NSW_GOV_API_BASE_URL, \
+    NSW_GOV_API_ACCESS_TOKEN_PATH
 from dotenv import load_dotenv
 import json
 
+# Load dotenv and set all keys
 load_dotenv()
-
-# Set Google API key
-google_api_key = os.getenv("GOOGLE_MAPS_API_KEY")
-
+google_api_key = os.getenv("GOOGLE_MAPS_API_KEY")  # Set Google API key
+nsw_gov_api_auth = os.getenv("NSW_GOV_FUEL_API_AUTHORIZATION")  # Set NSW Gov Authorization
+nsw_gov_api_key = os.getenv("NSW_GOV_FUEL_API_KEY")  # Set NSW Gov API key
 
 def params_to_query_string(params):
     query_string = ''
@@ -29,7 +30,10 @@ def get_distance(origins, destinations, output_format='json'):
     response = requests.get(url)
     data = json.loads(response.text)
     distance_in_metres = data['rows'][0]['elements'][0]['distance']['value']
-    distance_in_kilometres = distance_in_metres/1000
+    distance_in_kilometres = distance_in_metres / 1000
+    # time = data['rows'][0]['elements'][0]['duration']['text']
+    # seconds = data['rows'][0]['elements'][0]['duration']['value']
+
     return distance_in_kilometres
 
 
@@ -60,3 +64,61 @@ def load_lottie(url):
     if response.status_code != 200:
         return None
     return response.json()
+
+
+def get_nsw_gov_token():
+    headers = {'Authorization': nsw_gov_api_auth}
+    url = NSW_GOV_API_BASE_URL + NSW_GOV_API_ACCESS_TOKEN_PATH
+    url += '?grant_type=client_credentials'
+
+    response = requests.request("GET", url, headers=headers)
+
+    if response.status_code != 200:
+        return None
+
+    data = json.loads(response.text)
+    # @ToDo: Save token and only request a new one upon expiry
+
+    if data['access_token']:
+        return data['access_token']
+
+    return False
+
+
+def get_fuel_price():
+    token = get_nsw_gov_token()
+
+    headers = {
+        'content-type': "application/json",
+        'authorization': 'Bearer ' + token,
+        'apikey': nsw_gov_api_key
+    }
+
+    url = NSW_GOV_API_BASE_URL + 'FuelPriceCheck/v2/fuel/prices/station/'
+    url += 'Bondi' # Hard-coding station code for POC
+
+    response = requests.request("GET", url, headers=headers)
+
+    print(response)
+
+
+
+def address_autocomplete(input_string, output_format='json', location='', radius=''):
+    url = GOOGLE_API_PLACE_AUTOCOMPLETE + output_format + "?input=" + input_string
+    url += "&types=address&radius=500"
+    url += "&fields=[address_components]"
+    # url += "&fields=[formatted-address]"
+    url += '&key=' + google_api_key  # Add Key
+
+    if radius:
+        url += "&location=" + location
+
+    if location:
+        url += "&location=" + location
+
+    payload = {}
+    headers = {}
+
+    response = requests.request("GET", url, headers=headers, data=payload)
+
+    print(response.text)
