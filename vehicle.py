@@ -22,11 +22,11 @@ if st.button("Submit"):
     filtered_df = vehicles_df[(vehicles_df['year'] == year) & (vehicles_df['make'] == make) & (vehicles_df['model'] == model) & (vehicles_df['trany'] == transmission)]
 
     # Output the fuel efficiency in litres per 100 km - Highway
-    st.write("Fuel efficiency:", filtered_df['UHighway'].values[0], "L/100km")
+    st.write("Fuel efficiency - Highway:", filtered_df['UHighway'].values[0], "L/100km")
     
     # Output the fuel efficiency in litres per 100 km - City
-    st.write("Fuel efficiency:", filtered_df['UCity'].values[0], "L/100km")
+    st.write("Fuel efficiency - City:", filtered_df['UCity'].values[0], "L/100km")
 
     # output the fuel type and drivetrain
-    st.write("Fuel Type:", filtered_df['FuelType'].values[0])
-    st.write("Drivetrain:", filtered_df['Drivetrain'].values[0])
+    st.write("Fuel Type:", filtered_df['fuelType1'].values[0])
+    st.write("Drivetrain:", filtered_df['drive'].values[0])
