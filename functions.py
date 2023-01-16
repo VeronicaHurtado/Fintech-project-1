@@ -31,14 +31,10 @@ def calculate_fuel_cost(distance, fuel_type, cost_per_litre):
 # start_location: a string indicating the address for the starting point (e.g. "1 Collins Street, Melbourne, VIC")
 # end_location: a string indicating the address for the ending point (e.g., "1 Elizabeth Street, Melbourne, VIC")
 # fuel_type: a string indicating the type of fuel used (either "petrol" or "diesel")
-def calculate_fuel_cost_between_destinations(start_location, end_location, fuel_type):
-    # @ToDo: Get car_make, car_model,
-
-    # @ToDo: 1 - Get fuel cost per litre from the API
+def calculate_trip_fuel_cost(fuel_type, distance):
+    # @ToDo: Get fuel cost per litre from the APIs
     cost_per_litre = 2.50  # Assume this price for now
-    # 2 - Get distance in Kilometres between given locations
-    distance = get_distance(origins=start_location, destinations=end_location)
-    # 3 - Calculate total fuel cost for this distance
+    # Calculate total fuel cost for this distance
     cost = calculate_fuel_cost(distance=distance, fuel_type=fuel_type, cost_per_litre=cost_per_litre)
     return cost
 

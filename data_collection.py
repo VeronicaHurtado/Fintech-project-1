@@ -1,7 +1,8 @@
 import requests
 import os
-from constants import GOOGLE_API_DISTANCE_MATRIX, GOOGLE_API_PLACE_AUTOCOMPLETE, NSW_GOV_API_BASE_URL, \
-    NSW_GOV_API_ACCESS_TOKEN_PATH
+import pandas as pd
+from constants import GOOGLE_API_DISTANCE_MATRIX, GOOGLE_API_PLACE_AUTOCOMPLETE, GOOGLE_API_DIRECTIONS
+from constants import NSW_GOV_API_BASE_URL, NSW_GOV_API_ACCESS_TOKEN_PATH
 from dotenv import load_dotenv
 import json
 
@@ -11,10 +12,11 @@ google_api_key = os.getenv("GOOGLE_MAPS_API_KEY")  # Set Google API key
 nsw_gov_api_auth = os.getenv("NSW_GOV_FUEL_API_AUTHORIZATION")  # Set NSW Gov Authorization
 nsw_gov_api_key = os.getenv("NSW_GOV_FUEL_API_KEY")  # Set NSW Gov API key
 
-def params_to_query_string(params):
-    query_string = ''
-    # ToDo: Convert a Dictionary of params to query params
-    return query_string
+
+def load_vehicles_df():
+    csv_path = "Resources/vehicles.csv" # Setting path from csv
+    df = pd.read_csv(csv_path)
+    return df
 
 
 def get_distance(origins, destinations, output_format='json'):
@@ -35,6 +37,32 @@ def get_distance(origins, destinations, output_format='json'):
     # seconds = data['rows'][0]['elements'][0]['duration']['value']
 
     return distance_in_kilometres
+
+
+# mode (e.g. driving, walking, bicycling, transit)
+def get_directions(origin, destination, mode='driving', output_format='json'):
+    url = GOOGLE_API_DIRECTIONS + output_format + '?'
+
+    if not origin or not destination:
+        return 'You need to provide start and destination addresses'
+
+    # Add Key
+    url += 'key=' + google_api_key
+    # Addresses
+    url += '&origin=' + origin + '&destination=' + destination
+    # Select transportation mode
+    url += '&mode=' + mode
+    url += '&units=metric'
+
+    response = requests.get(url)
+    data = json.loads(response.text)
+
+    geocoded_waypoints = data['geocoded_waypoints']
+
+    # duration = data['']
+
+    print(data)
+    # @ToDo: Finish the public transport function
 
 
 # Get fuel consumption/efficiency in Kilometres per litre
@@ -95,12 +123,12 @@ def get_fuel_price():
     }
 
     url = NSW_GOV_API_BASE_URL + 'FuelPriceCheck/v2/fuel/prices/station/'
-    url += 'Bondi' # Hard-coding station code for POC
+    url += 'Bondi'  # Hard-coding station code for POC
 
     response = requests.request("GET", url, headers=headers)
 
     print(response)
-
+    # @ToDo: Finish this function
 
 
 def address_autocomplete(input_string, output_format='json', location='', radius=''):
