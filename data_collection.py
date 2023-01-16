@@ -39,7 +39,8 @@ def get_distance(origins, destinations, output_format='json'):
     return distance_in_kilometres
 
 
-def get_pt_details(origin, destination, output_format='json'):
+# mode (e.g. driving, walking, bicycling, transit)
+def get_directions(origin, destination, mode='driving', output_format='json'):
     url = GOOGLE_API_DIRECTIONS + output_format + '?'
 
     if not origin or not destination:
@@ -49,11 +50,14 @@ def get_pt_details(origin, destination, output_format='json'):
     url += 'key=' + google_api_key
     # Addresses
     url += '&origin=' + origin + '&destination=' + destination
-    # Public Transport mode
-    url += '&mode=transit'
+    # Select transportation mode
+    url += '&mode=' + mode
+    url += '&units=metric'
 
     response = requests.get(url)
     data = json.loads(response.text)
+
+    geocoded_waypoints = data['geocoded_waypoints']
 
     # duration = data['']
 

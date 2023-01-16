@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit_lottie import st_lottie
-from functions import calculate_fuel_cost_between_destinations
-from data_collection import load_lottie, load_vehicles_df
+from functions import calculate_trip_fuel_cost
+from data_collection import load_lottie, load_vehicles_df, get_distance, get_directions
 from constants import ASSET_ANIMATION_ONE
 
 # Streamlit config settings
@@ -27,9 +27,13 @@ with st.container():
         # Create a drop-down menu for the make
         make = st.selectbox("Select the make", vehicles_df[vehicles_df['year'] == year]['make'].unique())
         # Create a drop-down menu for the model
-        model = st.selectbox("Select the model", vehicles_df[(vehicles_df['year'] == year) & (vehicles_df['make'] == make)]['model'].unique())
+        model = st.selectbox("Select the model",
+                             vehicles_df[(vehicles_df['year'] == year) & (vehicles_df['make'] == make)][
+                                 'model'].unique())
         # Create a drop-down menu for the transmission
-        transmission = st.selectbox("Select the transmission", vehicles_df[(vehicles_df['year'] == year) & (vehicles_df['make'] == make) & (vehicles_df['model'] == model)]['trany'].unique())
+        transmission = st.selectbox("Select the transmission", vehicles_df[
+            (vehicles_df['year'] == year) & (vehicles_df['make'] == make) & (vehicles_df['model'] == model)][
+            'trany'].unique())
         # Start address
         start_location = st.text_input("Start Location:", "")
         # Destination address
@@ -39,8 +43,20 @@ with st.container():
 
         if st.button("Submit"):
             # Filter the data based on the user's selection
-            filtered_df = vehicles_df[(vehicles_df['year'] == year) & (vehicles_df['make'] == make) & (vehicles_df['model'] == model) & (vehicles_df['trany'] == transmission)]
-            petrol_trip_cost = calculate_fuel_cost_between_destinations(start_location, end_location, fuel_type)
+            filtered_df = vehicles_df[
+                (vehicles_df['year'] == year) & (vehicles_df['make'] == make) & (vehicles_df['model'] == model) & (
+                            vehicles_df['trany'] == transmission)]
+            # Get distance in Kilometres between given locations
+            distance = get_distance(origins=start_location, destinations=end_location)
+            # Get fuel cost by distance and fuel type
+            petrol_trip_cost = calculate_trip_fuel_cost(fuel_type, distance)
+            # Get Public Transport details
+            public_transport = get_directions(origin=start_location, destination=end_location, mode='transit')
+
+            if distance <= 20:  # If distance is less or equal than 20 Kilometres
+                # Also calculate alternative modes
+                bicycling = get_directions(origin=start_location, destination=end_location, mode='bicycling')
+                walking = get_directions(origin=start_location, destination=end_location, mode='walking')
 
     with right_column:
         st_lottie(animation_one)
