@@ -26,6 +26,9 @@ if st.button("Submit"):
     
     # Output the fuel efficiency in litres per 100 km - City
     st.write("Fuel efficiency - City:", filtered_df['UCity'].values[0], "L/100km")
+    
+    # Output the emissions in grams per kilometre
+    st.write("co2 Emissions:", filtered_df['co2TailpipeGpKM'].values[0], "g/KM")
 
     # output the fuel type and drivetrain
     st.write("Fuel Type:", filtered_df['fuelType1'].values[0])
