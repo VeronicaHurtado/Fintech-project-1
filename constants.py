@@ -1,4 +1,5 @@
 GOOGLE_API_DISTANCE_MATRIX = 'https://maps.googleapis.com/maps/api/distancematrix/'
+GOOGLE_API_DIRECTIONS = 'https://maps.googleapis.com/maps/api/directions/'
 GOOGLE_API_PLACE_AUTOCOMPLETE = 'https://maps.googleapis.com/maps/api/place/autocomplete/'
 ASSET_ANIMATION_ONE = 'https://assets4.lottiefiles.com/packages/lf20_mdbdc5l7.json'
 NSW_GOV_API_BASE_URL = 'https://api.onegov.nsw.gov.au/'
