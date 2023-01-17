@@ -14,7 +14,7 @@ nsw_gov_api_key = os.getenv("NSW_GOV_FUEL_API_KEY")  # Set NSW Gov API key
 
 
 def load_vehicles_df():
-    csv_path = "Resources/vehicles.csv" # Setting path from csv
+    csv_path = "Resources/vehicles.csv"  # Setting path from csv
     df = pd.read_csv(csv_path)
     return df
 
@@ -33,8 +33,6 @@ def get_distance(origins, destinations, output_format='json'):
     data = json.loads(response.text)
     distance_in_metres = data['rows'][0]['elements'][0]['distance']['value']
     distance_in_kilometres = distance_in_metres / 1000
-    # time = data['rows'][0]['elements'][0]['duration']['text']
-    # seconds = data['rows'][0]['elements'][0]['duration']['value']
 
     return distance_in_kilometres
 
@@ -57,12 +55,20 @@ def get_directions(origin, destination, mode='driving', output_format='json'):
     response = requests.get(url)
     data = json.loads(response.text)
 
-    geocoded_waypoints = data['geocoded_waypoints']
+    # Get only the best route (for now)
+    leg_one = data['routes'][0]['legs'][0]
+    distance_in_km = leg_one['distance']['value'] / 1000
+    duration_in_seconds = leg_one['duration']['value']
+    start_address = leg_one['start_address']
+    end_address = leg_one['end_address']
 
-    # duration = data['']
-
-    print(data)
-    # @ToDo: Finish the public transport function
+    return {
+        'mode': mode,
+        'distance': distance_in_km,
+        'duration_in_seconds': duration_in_seconds,
+        'start_address': start_address,
+        'end_address': end_address
+    }
 
 
 # Get fuel consumption/efficiency in Kilometres per litre
@@ -126,9 +132,7 @@ def get_fuel_price():
     url += 'Bondi'  # Hard-coding station code for POC
 
     response = requests.request("GET", url, headers=headers)
-
-    print(response)
-    # @ToDo: Finish this function
+    # @ToDo: Finish this function for real time fuel prices
 
 
 def address_autocomplete(input_string, output_format='json', location='', radius=''):
@@ -148,5 +152,4 @@ def address_autocomplete(input_string, output_format='json', location='', radius
     headers = {}
 
     response = requests.request("GET", url, headers=headers, data=payload)
-
-    print(response.text)
+    # @ToDo: Finish this function for better User experience
