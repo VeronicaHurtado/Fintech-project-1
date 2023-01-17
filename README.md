@@ -2,7 +2,7 @@
 
 ## Project Overview
 ### Eco Maxi - Save money and the planet, one ride at a time.
-![ecomaxi](images/ecomaxi.png)
+![ecomaxi](Images/ecomaxi.png)
 EcoMaxi helps users calculate the cost of fuel when driving between destinations and provides alternative public transportation options. The app also calculates the total emissions saved by choosing these alternative methods of transportation. 
 
 Additionally, EcoMaxi has a feature to compare and show the cheapest option between driving, public transportation and bike or walk. Users can also select a period of time and the app will visually display the total cash and emissions saved over that period, helping users make informed decisions about their transportation choices and ultimately reducing their environmental impact and saving them money. Overall, EcoMaxi promotes sustainable transportation, cost savings and a way to track and monitor the progress for the users.
@@ -51,7 +51,7 @@ A user story for EcoMaxi might be as follows: Peter wants to take a trip from hi
 
 9. Information such as 'Total Fuel Cost', 'Fuel Efficiency', cO2 Emissions, Fuel Type and Drivetrain will display
 
-![output](images/Output.png)
+![Output](Images/Output.png)
 
 
 
