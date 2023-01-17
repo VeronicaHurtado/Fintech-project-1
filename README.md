@@ -11,17 +11,17 @@ Additionally, EcoMaxi has a feature to compare and show the cheapest option betw
 - **Google Distance Matrix API**: [Documentation](https://developers.google.com/maps/documentation/distance-matrix/distance-matrix)
 
 ## How to use this application
-1- Clone this repository
-2- Set the following API Keys in an env file:
+1. Clone this repository
+2. Set the following API Keys in an env file:
 *Google API*
-TBD...
-3- Install the following dependencies:
+
+3. Install the following dependencies:
 ```commandline
 pip install streamlit
 pip install streamlit-lottie
 pip install requests
 ```
-4- To run the application, go to the root directory and use:
+4. To run the application, go to the root directory and use:
 ```commandline
 streamlit run app.py
 ```
