@@ -14,7 +14,7 @@ vehicles_df = load_vehicles_df()
 
 # Header Section
 with st.container():
-    st.subheader('Sub-header text here :car: :train: :bicyclist:')
+    st.subheader('EcoMaxi :car: :train: :bicyclist:')
     st.title("Fuel Cost Calculator")
     st.write("Instructions to use this tool")
 
@@ -53,7 +53,7 @@ with st.container():
             # Get Public Transport details
             public_transport = get_directions(origin=start_location, destination=end_location, mode='transit')
 
-            if distance <= 20:  # If distance is less or equal than 20 Kilometres
+            if distance <= 25:  # If distance is less or equal than 25 Kilometres
                 # Also calculate alternative modes
                 bicycling = get_directions(origin=start_location, destination=end_location, mode='bicycling')
                 walking = get_directions(origin=start_location, destination=end_location, mode='walking')
